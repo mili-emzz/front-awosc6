@@ -7,7 +7,7 @@ export default async function ArtworkGrid() {
   return (
     <section className="w-full py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {artworks.map((artwork) => (
             <ArtworkCard key={artwork.id} artwork={artwork} />
           ))}
