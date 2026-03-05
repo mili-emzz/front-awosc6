@@ -10,7 +10,7 @@ export interface IIIFThumbnail {
 export interface Artwork {
     id: number;
     title: string;
-    alt_titles: string;
+    alt_titles: string[] | null;
     date_display: string;
     short_description: string;
     thumbnail: IIIFThumbnail;
