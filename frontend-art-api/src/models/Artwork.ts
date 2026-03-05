@@ -8,17 +8,14 @@ export interface IIIFThumbnail {
 }
 
 export interface Artwork {
-    id: number;
-    title: string;
-    alt_titles: string[] | null;
-    date_display: string;
-    short_description: string;
-    thumbnail: IIIFThumbnail;
-
-    image_id: string; // Used to build IIIF URLs
-
-    artist_title: string;
-    artist_display: string;
-    place_of_origin: string;
-
+    id: number
+    title: string
+    alt_titles: string[] | null
+    date_display: string
+    short_description: string | null
+    thumbnail: IIIFThumbnail | null
+    image_id: string | null
+    artist_title: string | null
+    artist_display: string | null
+    place_of_origin: string | null
 }

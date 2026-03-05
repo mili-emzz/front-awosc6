@@ -5,7 +5,9 @@ export async function getArtworks(page: number, limit: number): Promise<Artwork[
     const res = await fetch(`${urlApi}artworks?page=${page}&limit=${limit}`);
     const data = await res.json() as { data: Artwork[] };
 
-    return data.data.map( a => ({
+    return data.data
+    .filter(a => a.image_id)
+    .map( a => ({
         id: a.id,
         title: a.title,
         alt_titles: a.alt_titles,

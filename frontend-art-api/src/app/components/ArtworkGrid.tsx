@@ -1,13 +1,26 @@
-import { getArtworks } from '@/api-services/artworkService';
-import ArtworkCard from './ArtworkCard';
+"use client"
 
-export default async function ArtworkGrid() {
-  const artworks = await getArtworks(1, 15);
+import { useEffect, useState } from "react";
+import { getArtworks } from "@/api-services/artworkService";
+import ArtworkCard from "./ArtworkCard";
+import { Artwork } from "@/models/Artwork";
+
+export default function ArtworkGrid() {
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+
+  useEffect(() => {
+    async function loadArtworks() {
+      const data = await getArtworks(1, 15);
+      setArtworks(data);
+    }
+
+    loadArtworks();
+  }, []);
 
   return (
     <section className="w-full py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {artworks.map((artwork) => (
             <ArtworkCard key={artwork.id} artwork={artwork} />
           ))}
