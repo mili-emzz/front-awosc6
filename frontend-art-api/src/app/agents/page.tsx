@@ -5,6 +5,8 @@ import { getAgents } from '@/api-services/agentService';
 import { Agent } from '@/models/Agents';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense } from 'react';
+import LoadingUI from '@/app/components/uistate/LoadingUI';
+import ErrorUI from '@/app/components/uistate/ErrorUI';
 
 function AgentsList() {
     const searchParams = useSearchParams();
@@ -15,19 +17,22 @@ function AgentsList() {
 
     const [agents, setAgents] = useState<Agent[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(initialPage);
     const limit = 10;
 
     useEffect(() => {
         async function loadAgents() {
             setLoading(true);
+            setError(null);
             try {
                 const data = await getAgents(page, limit);
                 setAgents(data);
                 // Sync URL
                 router.push(`/agents?page=${page}`);
-            } catch (error) {
-                console.error("Failed to fetch agents", error);
+            } catch (err) {
+                console.error("Failed to fetch agents", err);
+                setError("We couldn't load the agents. Please try again later.");
             } finally {
                 setLoading(false);
             }
@@ -36,7 +41,15 @@ function AgentsList() {
     }, [page, router]);
 
     if (loading && agents.length === 0) {
-        return <div className="text-center py-10">Loading Agents...</div>;
+        return <LoadingUI message="Loading Agents..." />;
+    }
+
+    if (error && agents.length === 0) {
+        return <ErrorUI
+            title="Error Loading Data"
+            message={error}
+            onRetry={() => setPage(page)}
+        />;
     }
 
     return (

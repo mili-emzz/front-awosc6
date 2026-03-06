@@ -8,6 +8,8 @@ import { Artwork } from '@/models/Artwork';
 import { Agent } from '@/models/Agents';
 import ArtworkCard from '@/app/components/ArtworkCard';
 import Link from 'next/link';
+import LoadingUI from '@/app/components/uistate/LoadingUI';
+import ErrorUI from '@/app/components/uistate/ErrorUI';
 
 export default function SearchResults() {
     const searchParams = useSearchParams();
@@ -15,6 +17,7 @@ export default function SearchResults() {
     const type = searchParams.get('type') || 'artworks';
 
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [artworks, setArtworks] = useState<Artwork[]>([]);
     const [agents, setAgents] = useState<Agent[]>([]);
     const [page, setPage] = useState(1);
@@ -23,6 +26,7 @@ export default function SearchResults() {
     useEffect(() => {
         async function fetchData() {
             setLoading(true);
+            setError(null);
             setPage(1); // reset to page 1 on new search
             try {
                 if (type === 'agents') {
@@ -34,8 +38,9 @@ export default function SearchResults() {
                     setArtworks(res);
                     setAgents([]);
                 }
-            } catch (error) {
-                console.error('Error fetching search results', error);
+            } catch (err) {
+                console.error('Error fetching search results', err);
+                setError("We couldn't load the search results. Please try again.");
             } finally {
                 setLoading(false);
             }
@@ -47,7 +52,15 @@ export default function SearchResults() {
     const totalPages = Math.ceil(items.length / limit);
     const paginatedItems = items.slice((page - 1) * limit, page * limit);
 
-    if (loading) return <div className="text-center py-10">Loading results...</div>;
+    if (loading) return <LoadingUI message="Loading results..." />;
+
+    if (error) return (
+        <ErrorUI
+            title="Error Loading Search"
+            message={error}
+        />
+    );
+
     if (!query) return <div className="text-center py-10">Please enter a search query.</div>;
     if (items.length === 0) return <div className="text-center py-10">No results found for "{query}".</div>;
 
