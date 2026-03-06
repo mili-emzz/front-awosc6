@@ -26,7 +26,7 @@ export default function Navbar() {
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-8">
                         <Link href="/" className="font-bold text-xl tracking-tight hover:text-gray-200 transition-colors">
-                            Artic Explorer
+                            ArtAPI
                         </Link>
                         <div className="hidden md:flex space-x-4">
                             <Link href="/" className="hover:bg-red-800 px-3 py-2 rounded-md font-medium transition-colors">

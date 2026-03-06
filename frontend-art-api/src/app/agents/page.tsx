@@ -95,7 +95,6 @@ function AgentsList() {
                 <span className="font-semibold text-gray-700">Page {page}</span>
                 <button
                     onClick={() => setPage((p) => p + 1)}
-                    // Disable next mostly if we got less than requested limit
                     disabled={loading || agents.length < limit}
                     className="px-6 py-2 bg-[#C3122A] text-white rounded font-medium disabled:opacity-50 disabled:bg-gray-400 hover:bg-red-800 transition-colors"
                 >
